@@ -45,12 +45,10 @@ public class ServerHandler extends SimpleChannelInboundHandler<String> {
     private static String username;
     private static String password;
     private static InetSocketAddress addressClient = null;
-    private static final String baseDir = System.getProperty("user.dir");
-    private static String currentDir = "/";
+    private static final String baseDir = "f:/upload"; //上传的根路径
+    private static String currentDir = "/"; //当前的工作目录
     private static FtpType ftpType;
     private static File renameFile;
-
-    private static final String UPLOAD_PATH = "f:" + File.separator + "upload";
 
     private final Class[] commandHandlerArgTypes = {String.class, StringTokenizer.class, ChannelHandlerContext.class};
 
@@ -500,7 +498,15 @@ public class ServerHandler extends SimpleChannelInboundHandler<String> {
     }
 
     private String createNativePath(String ftpPath) {
-        return UPLOAD_PATH + File.separator + ftpPath;
+//        return UPLOAD_PATH + File.separator + ftpPath;
+        String path;
+        if (ftpPath.charAt(0) == '/') {
+            path = baseDir + ftpPath;
+        } else {
+            path = baseDir + currentDir + "/" + ftpPath;
+        }
+        logger.info("Absolute path: {}", path);
+        return path;
     }
 
     private static InetSocketAddress parsePortArgs(String portArgs) {

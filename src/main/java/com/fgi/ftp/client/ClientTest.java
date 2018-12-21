@@ -27,7 +27,7 @@ public class ClientTest {
         // active
         client.setBufferSize(1024 * 1024 * 10);
         client.setFileType(FTP.BINARY_FILE_TYPE);
-        client.changeWorkingDirectory("/");
+        client.changeWorkingDirectory("/"); //切换到根路径，即上传到根路径
 //        System.out.println(client.stor("f:/test.zip"));
 //        FTPFile[] files = client.listFiles("e:/upload/");
 //        long remoteSize = 0;
@@ -54,8 +54,10 @@ public class ClientTest {
         File file = new File("f:/download/test.txt");
         OutputStream out = new FileOutputStream(file);
         client.setFileType(FTP.BINARY_FILE_TYPE);
-        client.changeWorkingDirectory("f:");
+        client.changeWorkingDirectory("/"); //切换到根路径下的文件
         client.retrieveFile("test.txt", out);
+        System.out.println(client.getReplyCode());
+        System.out.println(client.getReplyString());
         client.logout();
         client.disconnect();
     }
